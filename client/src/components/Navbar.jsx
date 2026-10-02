@@ -20,7 +20,7 @@ export default function Navbar({ isAdminLoggedIn, setIsAdminLoggedIn }) {
             <span className="font-bold text-xl tracking-wide">SCMG FOOTBALL CLUB</span>
           </Link>
           
-          <div className="hidden md:flex space-x-6 items-center">
+          <div className="flex flex-wrap md:flex-nowrap space-x-4 md:space-x-6 items-center">
             <NavLink to="/" className={navLinkClass} end>Home Page</NavLink>
             <NavLink to="/players" className={navLinkClass}>All Players</NavLink>
             <NavLink to="/stats" className={navLinkClass}>Stats</NavLink>
