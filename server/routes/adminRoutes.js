@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-// Simple secure admin login check
+
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
