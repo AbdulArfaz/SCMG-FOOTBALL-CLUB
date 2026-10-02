@@ -16,7 +16,7 @@ app.use(
     origin: function (origin, callback) {
       const allowedOrigins = [
         "http://localhost:5173",
-        "https://scmg-football-club-git-main-myself-4477.vercel.app/",
+        "https://scmg-football-club.vercel.app",
       ];
       
       if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
