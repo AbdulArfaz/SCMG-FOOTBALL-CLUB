@@ -20,4 +20,13 @@ export const fetchLeaderboard = (month) => api.get(`/stats/leaderboard?month=${m
 // Admin Login API call
 export const adminLogin = (credentials) => api.post('/admin/login', credentials);
 
+// // Media API calls
+export const fetchPictures = () => api.get('/media/pictures');
+export const addPicture = (formData) => api.post('/media/pictures', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' }
+});
+
+export const fetchVideos = () => api.get('/media/videos');
+export const addVideo = (videoData) => api.post('/media/videos', videoData);
+
 export default api;
