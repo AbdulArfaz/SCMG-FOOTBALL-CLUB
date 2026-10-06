@@ -5,7 +5,8 @@ import playerRoutes from './routes/playerRoutes.js';
 import matchRoutes from './routes/matchRoutes.js';
 import statsRoutes from './routes/statsRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
-
+import mediaRoutes from './routes/mediaRoutes.js';
+import path from 'path';
 
 const app = express();
 
@@ -35,5 +36,9 @@ app.use('/api/players', playerRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/media', mediaRoutes);
+app.use('/uploads', express.static(path.join(process.cwd(), "uploads")))
+
+
 
 export { app };

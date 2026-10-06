@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import HomeDashboard from './pages/HomeDashboard';
 import AllPlayersView from './pages/AllPlayersView';
 import StatsView from './pages/StatsView';
+import PicturesView from './pages/PicturesView';
 
 // Admin Pages
 import AdminLogin from './admin/AdminLogin';
@@ -27,6 +28,8 @@ export default function App() {
             <Route path="/" element={<HomeDashboard />} />
             <Route path="/players" element={<AllPlayersView />} />
             <Route path="/stats" element={<StatsView />} />
+            <Route path="/pictures" element={<PicturesView />} />
+
 
             {/* Admin Routes */}
             <Route 
