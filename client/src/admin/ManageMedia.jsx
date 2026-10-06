@@ -130,13 +130,13 @@ export default function ManageMedia() {
                 <img 
                   src={`${BACKEND_URL}${item.imageUrl}`} 
                   alt={item.title} 
-                  className="w-full h-full object-cover" 
+                  className="w-full h-full object-contain" 
                 />
               ) : (
                 <video 
                   src={`${BACKEND_URL}${item.videoUrl}`} 
                   controls 
-                  className="w-full h-full object-cover" 
+                  className="w-full h-full object-contain" 
                 />
               )}
             </div>

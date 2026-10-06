@@ -72,14 +72,14 @@ export default function PicturesView() {
                     <img
                       src={`${BACKEND_URL}${item.imageUrl}`}
                       alt={item.title || "Gallery Image"}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      className="w-full h-full object-contain group-hover:scale-105 transition duration-300"
                     />
                   ) : null
                 ) : item.videoUrl && item.videoUrl.startsWith("/uploads/") ? (
                   <video
                     src={`${BACKEND_URL}${item.videoUrl}`}
                     controls
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 ) : item.videoUrl ? (
                   <iframe 
