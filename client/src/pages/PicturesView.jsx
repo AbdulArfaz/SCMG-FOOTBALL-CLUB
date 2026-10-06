@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Image as ImageIcon, Video as VideoIcon, Calendar } from "lucide-react";
-import { fetchPictures, fetchVideos } from "../services/api";
+import { api, fetchPictures, fetchVideos } from "../services/api.js";
 
 export default function PicturesView() {
   const [activeTab, setActiveTab] = useState("pictures");
   const [items, setItems] = useState([]);
+  const BACKEND_URL = api.defaults.baseURL.replace('/api', '')
 
   useEffect(() => {
     loadMedia();
@@ -68,14 +69,14 @@ export default function PicturesView() {
                 {activeTab === "pictures" ? (
                   item.imageUrl ? (
                     <img
-                      src={`http://localhost:5000${item.imageUrl}`}
+                      src={`${BACKEND_URL}${item.imageUrl}`}
                       alt={item.title || "Gallery Image"}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                     />
                   ) : null
                 ) : item.videoUrl && item.videoUrl.startsWith("/uploads/") ? (
                   <video
-                    src={`http://localhost:5000${item.videoUrl}`}
+                    src={`${BACKEND_URL}${item.videoUrl}`}
                     controls
                     className="w-full h-full object-cover"
                   />

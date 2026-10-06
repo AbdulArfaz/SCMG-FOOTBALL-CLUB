@@ -27,6 +27,8 @@ export const addPicture = (formData) => api.post('/media/pictures', formData, {
 });
 
 export const fetchVideos = () => api.get('/media/videos');
-export const addVideo = (videoData) => api.post('/media/videos', videoData);
+export const addVideo = (videoData) => api.post('/media/videos', videoData, {
+  headers: { 'Content-Type': 'multipart/form-data'}
+});
 
 export default api;
