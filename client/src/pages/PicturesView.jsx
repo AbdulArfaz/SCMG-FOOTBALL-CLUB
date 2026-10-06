@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Image as ImageIcon, Video as VideoIcon, Calendar } from "lucide-react";
-import { api, fetchPictures, fetchVideos } from "../services/api.js";
+import api, { fetchPictures, fetchVideos } from "../services/api.js";
 
 export default function PicturesView() {
   const [activeTab, setActiveTab] = useState("pictures");
