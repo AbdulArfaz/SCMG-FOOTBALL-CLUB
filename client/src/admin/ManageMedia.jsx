@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Image as ImageIcon, Video as VideoIcon, PlusCircle, Calendar } from "lucide-react";
 import { fetchPictures, addPicture, fetchVideos, addVideo } from "../services/api";
-import api from '../services/api.js';
+
 
 export default function ManageMedia() {
   const [activeTab, setActiveTab] = useState("pictures");
   const [items, setItems] = useState([]);
   const [title, setTitle] = useState("");
-   const BACKEND_URL = api.defaults.baseURL.replace('/api', '')
+  
 
   useEffect(() => {
     loadMedia();
@@ -128,13 +128,13 @@ export default function ManageMedia() {
             <div className="h-48 overflow-hidden relative bg-slate-950 flex items-center justify-center">
               {activeTab === "pictures" ? (
                 <img 
-                  src={`${BACKEND_URL}${item.imageUrl}`} 
+                  src={item.imageUrl} 
                   alt={item.title} 
                   className="w-full h-full object-contain" 
                 />
               ) : (
                 <video 
-                  src={`${BACKEND_URL}${item.videoUrl}`} 
+                  src={item.videoUrl} 
                   controls 
                   className="w-full h-full object-contain" 
                 />
