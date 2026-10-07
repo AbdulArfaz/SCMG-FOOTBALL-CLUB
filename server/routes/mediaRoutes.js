@@ -17,6 +17,7 @@ router.get("/pictures", async (req, res) => {
     res.json(pictures);
   } catch (err) {
     console.error("Error fetching pictures:", err);
+    console.error("Error fetching pictures:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -57,6 +58,7 @@ router.get("/videos", async (req, res) => {
     const videos = await Video.find().sort({ date: -1 });
     res.json(videos);
   } catch (err) {
+    console.error("Error fetching videos:", err);
     console.error("Error fetching videos:", err);
     res.status(500).json({ error: err.message });
   }
