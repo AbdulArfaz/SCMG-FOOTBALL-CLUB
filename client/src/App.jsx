@@ -11,6 +11,7 @@ import PicturesView from './pages/PicturesView';
 // Admin Pages
 import AdminLogin from './admin/AdminLogin';
 import AdminDashboard from './admin/AdminDashboard';
+import VintageView from './pages/VintageView';
 
 export default function App() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(
@@ -29,6 +30,8 @@ export default function App() {
             <Route path="/players" element={<AllPlayersView />} />
             <Route path="/stats" element={<StatsView />} />
             <Route path="/pictures" element={<PicturesView />} />
+            <Route path="/old-media" element={<VintageView />} />
+
 
 
             {/* Admin Routes */}

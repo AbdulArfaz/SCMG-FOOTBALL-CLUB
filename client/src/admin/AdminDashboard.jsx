@@ -3,6 +3,7 @@ import ManagePlayers from "./ManagePlayers";
 import DailyScores from "./DailyScores";
 import StatsSummaries from "./StatsSummaries";
 import ManageMedia from "./ManageMedia";
+import ManageVintage from "./ManageVintage";
 
 export default function AdminDashboard({ setIsAdminLoggedIn }) {
   const [adminTab, setAdminTab] = useState("players");
@@ -46,6 +47,16 @@ export default function AdminDashboard({ setIsAdminLoggedIn }) {
           >
             Manage Media
           </button>
+           <button
+            onClick={() => setAdminTab("vintage")}
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+              adminTab === "media"
+                ? "bg-emerald-700 text-white"
+                : "text-emerald-300 hover:text-white"
+            }`}
+          >
+            Manage Vintage
+          </button>
         </div>
       </div>
 
@@ -53,6 +64,7 @@ export default function AdminDashboard({ setIsAdminLoggedIn }) {
       {adminTab === "scores" && <DailyScores />}
       {adminTab === "stats" && <StatsSummaries />}
       {adminTab === "media" && <ManageMedia />}
+      {adminTab === "vintage" && <ManageVintage />}
     </div>
   );
 }

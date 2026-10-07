@@ -60,6 +60,9 @@ export default function Navbar({ isAdminLoggedIn, setIsAdminLoggedIn }) {
             <NavLink to="/pictures" className={navLinkClass}>
               Pictures
             </NavLink>
+            <NavLink to="/old-media" className={navLinkClass}>
+              Vintage
+            </NavLink>
           </div>
 
           {/* Desktop Auth Button */}
@@ -138,6 +141,13 @@ export default function Navbar({ isAdminLoggedIn, setIsAdminLoggedIn }) {
               className={mobileNavLinkClass}
             >
               Pictures
+            </NavLink>
+              <NavLink
+              to="/old-media"
+              onClick={() => setIsOpen(false)}
+              className={mobileNavLinkClass}
+            >
+              Vintage
             </NavLink>
           </div>
 
