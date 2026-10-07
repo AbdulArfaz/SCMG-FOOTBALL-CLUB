@@ -134,7 +134,7 @@ export default function ManageMedia() {
                 />
               ) : (
                 <video 
-                  src={item.videoUrl}
+                  src={item.videoUrl} 
                   controls 
                   className="w-full h-full object-contain" 
                 />
