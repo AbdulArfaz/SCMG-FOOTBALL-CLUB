@@ -31,4 +31,15 @@ export const addVideo = (videoData) => api.post('/media/videos', videoData, {
   headers: { 'Content-Type': 'multipart/form-data'}
 });
 
+// --- Vintage Media API calls ---
+export const fetchVintagePictures = () => api.get('/vintage-pictures');
+export const addVintagePicture = (formData) => api.post('/vintage-pictures', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' }
+});
+
+export const fetchVintageVideos = () => api.get('/vintage-videos');
+export const addVintageVideo = (videoData) => api.post('/vintage-videos', videoData, {
+  headers: { 'Content-Type': 'multipart/form-data' }
+});
+
 export default api;
