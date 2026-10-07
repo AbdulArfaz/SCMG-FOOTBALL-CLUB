@@ -1,21 +1,14 @@
 import express from "express";
 import multer from "multer";
-import path from "path";
+import fs from "fs";
 import Picture from "../models/Picture.js";
 import Video from "../models/Video.js";
+import { imagekit } from "../services/imagekitClient.js";
 
 const router = express.Router();
 
-// Configure Multer storage for local image uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Make sure an 'uploads' folder exists in your server root
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-const upload = multer({ storage });
+// Use temporary local folder instead of RAM buffer
+const upload = multer({ dest: "uploads/" });
 
 // --- Pictures Endpoints ---
 router.get("/pictures", async (req, res) => {
@@ -23,20 +16,37 @@ router.get("/pictures", async (req, res) => {
     const pictures = await Picture.find().sort({ date: -1 });
     res.json(pictures);
   } catch (err) {
+    console.error("Error fetching pictures:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// Notice `upload.single('image')` middleware here
 router.post("/pictures", upload.single("image"), async (req, res) => {
   try {
     const { title } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
+    let imageUrl = req.body.imageUrl || "";
+
+    if (req.file) {
+      // Read the temporary file from disk stream
+      const fileStream = fs.createReadStream(req.file.path);
+
+      const uploadResponse = await imagekit.upload({
+        file: fileStream,
+        fileName: `${Date.now()}-${req.file.originalname}`,
+        folder: "/club-pictures",
+      });
+      imageUrl = uploadResponse.url;
+
+      // Clean up the temp file from Render's disk
+      fs.unlinkSync(req.file.path);
+    }
 
     const newPic = new Picture({ title, imageUrl });
     const savedPic = await newPic.save();
     res.status(201).json(savedPic);
   } catch (err) {
+    if (req.file && req.file.path) fs.unlinkSync(req.file.path); // Cleanup on error
+    console.error("Error saving picture to ImageKit:", err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -47,6 +57,7 @@ router.get("/videos", async (req, res) => {
     const videos = await Video.find().sort({ date: -1 });
     res.json(videos);
   } catch (err) {
+    console.error("Error fetching videos:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -54,11 +65,29 @@ router.get("/videos", async (req, res) => {
 router.post("/videos", upload.single("video"), async (req, res) => {
   try {
     const { title } = req.body;
-    const videoUrl = req.file ? `/uploads/${req.file.filename}` : req.body.videoUrl || "";
-    const newVid = new Video({title, videoUrl});
+    let videoUrl = req.body.videoUrl || "";
+
+    if (req.file) {
+      // Read the temporary video file from disk stream
+      const fileStream = fs.createReadStream(req.file.path);
+
+      const uploadResponse = await imagekit.upload({
+        file: fileStream,
+        fileName: `${Date.now()}-${req.file.originalname}`,
+        folder: "/club-videos",
+      });
+      videoUrl = uploadResponse.url;
+
+      // Clean up the temp file from Render's disk
+      fs.unlinkSync(req.file.path);
+    }
+
+    const newVid = new Video({ title, videoUrl });
     const savedVid = await newVid.save();
     res.status(201).json(savedVid);
   } catch (err) {
+    if (req.file && req.file.path) fs.unlinkSync(req.file.path); // Cleanup on error
+    console.error("Error saving video to ImageKit:", err);
     res.status(400).json({ error: err.message });
   }
 });
