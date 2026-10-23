@@ -1,23 +1,86 @@
-import React, { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Trophy, LogIn, LogOut, Menu, X, ShieldCheck } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  Link,
+  NavLink,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+import {
+  Trophy,
+  LogIn,
+  LogOut,
+  Menu,
+  X,
+  ShieldCheck,
+  Home,
+  Users,
+  BarChart3,
+  Images,
+  History,
+  CalendarDays,
+  ChevronRight,
+} from "lucide-react";
 
-export default function Navbar({ isAdminLoggedIn, setIsAdminLoggedIn }) {
+export default function Navbar({
+  isAdminLoggedIn,
+  setIsAdminLoggedIn,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const navLinkClass = ({ isActive }) =>
-    `px-3 py-2 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 ${
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
+  // Prevent background scrolling while the mobile menu is open.
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // Close the menu with the Escape key.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  const navItems = [
+    { to: "/", label: "Home", icon: Home, end: true },
+    { to: "/players", label: "Players", icon: Users },
+    { to: "/stats", label: "Stats", icon: BarChart3 },
+    { to: "/pictures", label: "Gallery", icon: Images },
+    { to: "/old-media", label: "Vintage", icon: History },
+    {
+      to: "/tournaments",
+      label: "Tournaments",
+      icon: CalendarDays,
+    },
+  ];
+
+  const desktopLinkClass = ({ isActive }) =>
+    `relative flex items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-200 ${
       isActive
-        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]"
-        : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+        ? "bg-emerald-400/10 text-emerald-300"
+        : "text-slate-300 hover:bg-white/5 hover:text-white"
     }`;
 
-  const mobileNavLinkClass = ({ isActive }) =>
-    `block px-4 py-3 rounded-xl text-base font-medium transition-all ${
+  const mobileLinkClass = ({ isActive }) =>
+    `group flex items-center justify-between rounded-xl px-4 py-3.5 text-sm font-semibold transition-all duration-200 ${
       isActive
-        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-        : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+        ? "border border-emerald-400/20 bg-emerald-400/10 text-emerald-300"
+        : "border border-transparent text-slate-300 hover:bg-white/5 hover:text-white"
     }`;
 
   const handleLogout = () => {
@@ -28,151 +91,207 @@ export default function Navbar({ isAdminLoggedIn, setIsAdminLoggedIn }) {
   };
 
   return (
-    <nav className="bg-linear-to-r from-slate-950 via-emerald-950 to-slate-950 text-white shadow-2xl border-b border-emerald-800/40 sticky top-0 z-50 backdrop-blur-md bg-opacity-90">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
-          {/* Brand Logo & Title */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="p-2.5 bg-linear-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-lg shadow-emerald-900/40 group-hover:scale-105 transition duration-300 border border-emerald-400/30">
-              <Trophy className="h-6 w-6 text-white animate-pulse" />
+    <>
+      <nav className="sticky top-0 z-50 border-b border-emerald-400/15 bg-slate-950/95 text-white shadow-xl shadow-black/20 backdrop-blur-xl">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-[72px] items-center justify-between gap-3 sm:h-20">
+
+            {/* Club branding */}
+            <Link
+              to="/"
+              className="group flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3"
+              aria-label="SCMG Football Club home"
+            >
+              <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-300/30 bg-gradient-to-br from-emerald-400 to-emerald-700 shadow-lg shadow-emerald-950/60 transition-transform duration-300 group-hover:scale-105 sm:h-12 sm:w-12">
+                <Trophy className="h-6 w-6 text-white sm:h-7 sm:w-7" />
+                <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-slate-950 bg-amber-400" />
+              </div>
+
+              <div className="min-w-0">
+                <div className="bg-gradient-to-r from-white via-emerald-100 to-emerald-400 bg-clip-text text-lg font-black leading-tight tracking-[0.12em] text-transparent sm:text-xl">
+                  SCMG
+                </div>
+                <div className="mt-0.5 whitespace-nowrap text-[9px] font-bold uppercase tracking-[0.16em] text-emerald-400 sm:text-[10px] sm:tracking-[0.2em]">
+                  Football Club
+                </div>
+              </div>
+            </Link>
+
+            {/* Desktop navigation */}
+            <div className="hidden items-center gap-1 rounded-2xl border border-white/[0.07] bg-white/[0.03] p-1.5 lg:flex">
+              {navItems.map(({ to, label, icon: Icon, end }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={end}
+                  className={desktopLinkClass}
+                >
+                  {({ isActive }) => (
+                    <>
+                      <Icon
+                        className={`h-4 w-4 ${
+                          isActive
+                            ? "text-emerald-300"
+                            : "text-slate-400"
+                        }`}
+                      />
+                      <span>{label}</span>
+                      {isActive && (
+                        <span className="absolute bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-emerald-400" />
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              ))}
             </div>
-            <div className="flex flex-col">
-              <span className="font-black text-lg sm:text-xl tracking-wider bg-linear-to-r from-white via-emerald-100 to-emerald-400 bg-clip-text text-transparent">
-                SCMG
-              </span>
-              <span className="text-[10px] tracking-widest text-emerald-400 font-bold uppercase -mt-1">
-                Football Club
-              </span>
+
+            {/* Desktop admin action */}
+            <div className="hidden shrink-0 items-center lg:flex">
+              {!isAdminLoggedIn ? (
+                <NavLink
+                  to="/admin"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-200 ${
+                      isActive
+                        ? "bg-amber-300 text-slate-950"
+                        : "bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 shadow-lg shadow-amber-950/20 hover:-translate-y-0.5 hover:from-amber-300 hover:to-amber-400"
+                    }`
+                  }
+                >
+                  <ShieldCheck className="h-4 w-4" />
+                  Admin Login
+                </NavLink>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 rounded-xl border border-rose-400/20 bg-rose-500/10 px-4 py-2.5 text-sm font-bold text-rose-300 transition hover:bg-rose-500/20"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              )}
             </div>
-          </Link>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden md:flex space-x-2 items-center bg-slate-900/60 p-1.5 rounded-2xl border border-slate-800 shadow-inner">
-            <NavLink to="/" className={navLinkClass} end>
-              Home Page
-            </NavLink>
-            <NavLink to="/players" className={navLinkClass}>
-              All Players
-            </NavLink>
-            <NavLink to="/stats" className={navLinkClass}>
-              Stats
-            </NavLink>
-            <NavLink to="/pictures" className={navLinkClass}>
-              Pictures
-            </NavLink>
-            <NavLink to="/old-media" className={navLinkClass}>
-              Vintage
-            </NavLink>
-          </div>
-
-          {/* Desktop Auth Button */}
-          <div className="hidden md:flex items-center">
-            {!isAdminLoggedIn ? (
-              <NavLink
-                to="/admin"
-                className={({ isActive }) =>
-                  `flex items-center space-x-2 text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-300 shadow-lg ${
-                    isActive
-                      ? "bg-amber-500 text-slate-950 shadow-amber-500/20"
-                      : "bg-linear-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 hover:shadow-amber-500/30 transform hover:-translate-y-0.5"
-                  }`
-                }
-              >
-                <LogIn className="h-4 w-4" />
-                <span>Admin Login</span>
-              </NavLink>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-2 bg-linear-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-red-900/30 transform hover:-translate-y-0.5"
-              >
-                <LogOut className="h-4 w-4" />
-                <span>Logout</span>
-              </button>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center">
+            {/* Mobile / tablet menu toggle */}
             <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition"
-              aria-label="Toggle Menu"
+              type="button"
+              onClick={() => setIsOpen((previous) => !previous)}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.05] text-slate-200 transition hover:border-emerald-400/30 hover:bg-emerald-400/10 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 lg:hidden"
+              aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isOpen}
+              aria-controls="mobile-navigation"
             >
               {isOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="h-5 w-5" />
               )}
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Menu Dropdown / Drawer */}
-      {isOpen && (
-        <div className="md:hidden bg-slate-950/95 border-b border-emerald-900/40 px-4 pt-3 pb-6 space-y-3 backdrop-blur-xl animate-fadeIn">
-          <div className="space-y-1">
-            <NavLink
-              to="/"
-              onClick={() => setIsOpen(false)}
-              className={mobileNavLinkClass}
-              end
-            >
-              Home Page
-            </NavLink>
-            <NavLink
-              to="/players"
-              onClick={() => setIsOpen(false)}
-              className={mobileNavLinkClass}
-            >
-              All Players
-            </NavLink>
-            <NavLink
-              to="/stats"
-              onClick={() => setIsOpen(false)}
-              className={mobileNavLinkClass}
-            >
-              Stats
-            </NavLink>
-            <NavLink
-              to="/pictures"
-              onClick={() => setIsOpen(false)}
-              className={mobileNavLinkClass}
-            >
-              Pictures
-            </NavLink>
-              <NavLink
-              to="/old-media"
-              onClick={() => setIsOpen(false)}
-              className={mobileNavLinkClass}
-            >
-              Vintage
-            </NavLink>
-          </div>
+        {/* Mobile and tablet navigation panel */}
+        <div
+          id="mobile-navigation"
+          className={`overflow-hidden border-t border-emerald-400/10 bg-slate-950 transition-[max-height,opacity] duration-300 ease-in-out lg:hidden ${
+            isOpen
+              ? "visible max-h-[85vh] opacity-100"
+              : "invisible max-h-0 opacity-0"
+          }`}
+          aria-hidden={!isOpen}
+        >
+          <div className="mx-auto max-w-7xl space-y-4 overflow-y-auto px-4 py-5 sm:px-6">
+            {/* Mobile menu heading */}
+            <div className="flex items-center justify-between px-1 pb-1">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">
+                  Club Navigation
+                </p>
+                <p className="mt-1 text-xs text-slate-500">
+                  Explore SCMG Football Club
+                </p>
+              </div>
+              <Trophy className="h-5 w-5 text-emerald-500/70" />
+            </div>
 
-          <div className="pt-2 border-t border-slate-800/80">
-            {!isAdminLoggedIn ? (
-              <NavLink
-                to="/admin"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center space-x-2 w-full bg-linear-to-r from-amber-500 to-amber-600 text-slate-950 font-bold px-4 py-3 rounded-xl shadow-md"
-              >
-                <LogIn className="h-4 w-4" />
-                <span>Admin Login</span>
-              </NavLink>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="flex items-center justify-center space-x-2 w-full bg-linear-to-r from-rose-600 to-red-600 text-white font-bold px-4 py-3 rounded-xl shadow-md"
-              >
-                <LogOut className="h-4 w-4" />
-                <span>Logout</span>
-              </button>
-            )}
+            {/* Navigation links */}
+            <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+              {navItems.map(({ to, label, icon: Icon, end }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={end}
+                  tabIndex={isOpen ? 0 : -1}
+                  onClick={() => setIsOpen(false)}
+                  className={mobileLinkClass}
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span className="flex items-center gap-3">
+                        <span
+                          className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                            isActive
+                              ? "bg-emerald-400/15 text-emerald-300"
+                              : "bg-white/[0.04] text-slate-400 group-hover:text-emerald-300"
+                          }`}
+                        >
+                          <Icon className="h-4.5 w-4.5" />
+                        </span>
+                        {label}
+                      </span>
+                      <ChevronRight
+                        className={`h-4 w-4 transition-transform group-hover:translate-x-0.5 ${
+                          isActive
+                            ? "text-emerald-300"
+                            : "text-slate-600"
+                        }`}
+                      />
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </div>
+
+            {/* Mobile admin action */}
+            <div className="border-t border-white/[0.08] pt-4">
+              {!isAdminLoggedIn ? (
+                <NavLink
+                  to="/admin"
+                  tabIndex={isOpen ? 0 : -1}
+                  onClick={() => setIsOpen(false)}
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-3.5 text-sm font-extrabold text-slate-950 shadow-lg shadow-amber-950/20 transition hover:from-amber-300 hover:to-amber-400"
+                >
+                  <LogIn className="h-4 w-4" />
+                  Admin Login
+                </NavLink>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-rose-400/20 bg-rose-500/10 px-4 py-3.5 text-sm font-bold text-rose-300 transition hover:bg-rose-500/20"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              )}
+            </div>
+
+            <p className="pb-1 text-center text-[10px] font-medium uppercase tracking-[0.18em] text-slate-600">
+              Passion • Teamwork • Football
+            </p>
           </div>
         </div>
+      </nav>
+
+      {/* Mobile menu backdrop */}
+      {isOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation menu"
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] lg:hidden"
+        />
       )}
-    </nav>
+    </>
   );
 }

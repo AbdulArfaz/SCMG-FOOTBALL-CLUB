@@ -7,6 +7,7 @@ import statsRoutes from './routes/statsRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import mediaRoutes from './routes/mediaRoutes.js';
 import vintageMediaRoutes from './routes/vintageMediaRoutes.js';
+import tournamentRoutes from './routes/tournamentRoutes.js';
 import path from 'path';
 
 const app = express();
@@ -39,10 +40,8 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/media', mediaRoutes);
 app.use('/api', vintageMediaRoutes);
+app.use('/api/tournaments', tournamentRoutes);
 app.use('/uploads', express.static(path.join(process.cwd(), "uploads")))
-
-
-
 
 
 export { app };
