@@ -7,6 +7,7 @@ import HomeDashboard from './pages/HomeDashboard';
 import AllPlayersView from './pages/AllPlayersView';
 import StatsView from './pages/StatsView';
 import PicturesView from './pages/PicturesView';
+import TournamentsView from './pages/TournamentsView';
 
 // Admin Pages
 import AdminLogin from './admin/AdminLogin';
@@ -31,7 +32,8 @@ export default function App() {
             <Route path="/stats" element={<StatsView />} />
             <Route path="/pictures" element={<PicturesView />} />
             <Route path="/old-media" element={<VintageView />} />
-
+            <Route path="/tournaments" element={<TournamentsView />} />
+        
 
 
             {/* Admin Routes */}
