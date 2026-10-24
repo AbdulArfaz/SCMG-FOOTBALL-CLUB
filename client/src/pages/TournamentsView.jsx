@@ -811,7 +811,7 @@ export default function TournamentsView() {
 
               {stats.topScorers.length > 0 ? (
                 <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-slate-900/70">
-                  {stats.topScorers.slice(0, 10).map((scorer, index) => (
+                  {stats.topScorers.slice(0, 20).map((scorer, index) => (
                     <div
                       key={scorer.id}
                       className="flex items-center gap-3 border-b border-white/[0.06] px-4 py-3.5 last:border-b-0 sm:px-5"
