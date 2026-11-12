@@ -5,5 +5,6 @@ const matchSchema = new mongoose.Schema({
   teamAScore: { type: Number, required: true, default: 0 },
   teamBScore: { type: Number, required: true, default: 0 },
 }, { timestamps: true });
+matchSchema.index({ date: 1 });
 
 export default mongoose.model('Match', matchSchema);
