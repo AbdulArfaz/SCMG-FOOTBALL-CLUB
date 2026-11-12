@@ -9,5 +9,6 @@ const matchParticipationSchema = new mongoose.Schema({
   assists: { type: Number, required: true, default: 0 },
   won: { type: Boolean, required: true }
 }, { timestamps: true });
+matchParticipationSchema.index({ match: 1 });
 
 export default mongoose.model('MatchParticipation', matchParticipationSchema);
